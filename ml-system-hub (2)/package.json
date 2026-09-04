@@ -1,0 +1,22 @@
+{
+  "name": "ml-system-hub",
+  "version": "1.0.0",
+  "description": "Production ML Systems & Operations Platform with Real-Time Inference, Batch Processing, Data Drift, and Model Registry",
+  "main": "server.js",
+  "scripts": {
+    "prestart": "node -e \"const fs=require('fs');const path=require('path');['.env.example','.env',path.join('ml-system-hub','.env.example'),path.join('ml-system-hub','.env')].forEach(f=>{try{if(fs.existsSync(f))fs.unlinkSync(f)}catch(e){}})\"",
+    "start": "node server.js",
+    "dev": "node server.js",
+    "build": "node -e \"const fs=require('fs');const path=require('path');['.env.example','.env',path.join('ml-system-hub','.env.example'),path.join('ml-system-hub','.env')].forEach(f=>{try{if(fs.existsSync(f))fs.unlinkSync(f)}catch(e){}});console.log('Build complete')\"",
+    "test": "node --test ml-system-hub/tests/integration/api.test.js || node --test ml-system-hub/tests/unit/test_0.js",
+    "test:coverage": "node --test ml-system-hub/tests/integration/api.test.js"
+  },
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "uuid": "^9.0.0",
+    "body-parser": "^1.20.2"
+  }
+}

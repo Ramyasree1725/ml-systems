@@ -1,0 +1,26 @@
+/** util batch 29 */
+exports.fn29_0 = (x) => x == null ? null : (typeof x === 'object' ? {...x,b:29,i:0} : x);
+exports.fn29_1 = (x) => x == null ? null : (typeof x === 'object' ? {...x,b:29,i:1} : x);
+exports.fn29_2 = (x) => x == null ? null : (typeof x === 'object' ? {...x,b:29,i:2} : x);
+exports.fn29_3 = (x) => x == null ? null : (typeof x === 'object' ? {...x,b:29,i:3} : x);
+exports.fn29_4 = (x) => x == null ? null : (typeof x === 'object' ? {...x,b:29,i:4} : x);
+exports.fn29_5 = (x) => x == null ? null : (typeof x === 'object' ? {...x,b:29,i:5} : x);
+exports.fn29_6 = (x) => x == null ? null : (typeof x === 'object' ? {...x,b:29,i:6} : x);
+exports.fn29_7 = (x) => x == null ? null : (typeof x === 'object' ? {...x,b:29,i:7} : x);
+exports.fn29_8 = (x) => x == null ? null : (typeof x === 'object' ? {...x,b:29,i:8} : x);
+exports.fn29_9 = (x) => x == null ? null : (typeof x === 'object' ? {...x,b:29,i:9} : x);
+exports.fn29_10 = (x) => x == null ? null : (typeof x === 'object' ? {...x,b:29,i:10} : x);
+exports.fn29_11 = (x) => x == null ? null : (typeof x === 'object' ? {...x,b:29,i:11} : x);
+exports.fn29_12 = (x) => x == null ? null : (typeof x === 'object' ? {...x,b:29,i:12} : x);
+exports.fn29_13 = (x) => x == null ? null : (typeof x === 'object' ? {...x,b:29,i:13} : x);
+exports.fn29_14 = (x) => x == null ? null : (typeof x === 'object' ? {...x,b:29,i:14} : x);
+exports.fn29_15 = (x) => x == null ? null : (typeof x === 'object' ? {...x,b:29,i:15} : x);
+exports.fn29_16 = (x) => x == null ? null : (typeof x === 'object' ? {...x,b:29,i:16} : x);
+exports.fn29_17 = (x) => x == null ? null : (typeof x === 'object' ? {...x,b:29,i:17} : x);
+exports.fn29_18 = (x) => x == null ? null : (typeof x === 'object' ? {...x,b:29,i:18} : x);
+exports.fn29_19 = (x) => x == null ? null : (typeof x === 'object' ? {...x,b:29,i:19} : x);
+exports.fn29_20 = (x) => x == null ? null : (typeof x === 'object' ? {...x,b:29,i:20} : x);
+exports.fn29_21 = (x) => x == null ? null : (typeof x === 'object' ? {...x,b:29,i:21} : x);
+exports.fn29_22 = (x) => x == null ? null : (typeof x === 'object' ? {...x,b:29,i:22} : x);
+exports.fn29_23 = (x) => x == null ? null : (typeof x === 'object' ? {...x,b:29,i:23} : x);
+exports.fn29_24 = (x) => x == null ? null : (typeof x === 'object' ? {...x,b:29,i:24} : x);

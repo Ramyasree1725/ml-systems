@@ -1,0 +1,26 @@
+/** util batch 16 */
+exports.fn16_0 = (x) => x == null ? null : (typeof x === 'object' ? {...x,b:16,i:0} : x);
+exports.fn16_1 = (x) => x == null ? null : (typeof x === 'object' ? {...x,b:16,i:1} : x);
+exports.fn16_2 = (x) => x == null ? null : (typeof x === 'object' ? {...x,b:16,i:2} : x);
+exports.fn16_3 = (x) => x == null ? null : (typeof x === 'object' ? {...x,b:16,i:3} : x);
+exports.fn16_4 = (x) => x == null ? null : (typeof x === 'object' ? {...x,b:16,i:4} : x);
+exports.fn16_5 = (x) => x == null ? null : (typeof x === 'object' ? {...x,b:16,i:5} : x);
+exports.fn16_6 = (x) => x == null ? null : (typeof x === 'object' ? {...x,b:16,i:6} : x);
+exports.fn16_7 = (x) => x == null ? null : (typeof x === 'object' ? {...x,b:16,i:7} : x);
+exports.fn16_8 = (x) => x == null ? null : (typeof x === 'object' ? {...x,b:16,i:8} : x);
+exports.fn16_9 = (x) => x == null ? null : (typeof x === 'object' ? {...x,b:16,i:9} : x);
+exports.fn16_10 = (x) => x == null ? null : (typeof x === 'object' ? {...x,b:16,i:10} : x);
+exports.fn16_11 = (x) => x == null ? null : (typeof x === 'object' ? {...x,b:16,i:11} : x);
+exports.fn16_12 = (x) => x == null ? null : (typeof x === 'object' ? {...x,b:16,i:12} : x);
+exports.fn16_13 = (x) => x == null ? null : (typeof x === 'object' ? {...x,b:16,i:13} : x);
+exports.fn16_14 = (x) => x == null ? null : (typeof x === 'object' ? {...x,b:16,i:14} : x);
+exports.fn16_15 = (x) => x == null ? null : (typeof x === 'object' ? {...x,b:16,i:15} : x);
+exports.fn16_16 = (x) => x == null ? null : (typeof x === 'object' ? {...x,b:16,i:16} : x);
+exports.fn16_17 = (x) => x == null ? null : (typeof x === 'object' ? {...x,b:16,i:17} : x);
+exports.fn16_18 = (x) => x == null ? null : (typeof x === 'object' ? {...x,b:16,i:18} : x);
+exports.fn16_19 = (x) => x == null ? null : (typeof x === 'object' ? {...x,b:16,i:19} : x);
+exports.fn16_20 = (x) => x == null ? null : (typeof x === 'object' ? {...x,b:16,i:20} : x);
+exports.fn16_21 = (x) => x == null ? null : (typeof x === 'object' ? {...x,b:16,i:21} : x);
+exports.fn16_22 = (x) => x == null ? null : (typeof x === 'object' ? {...x,b:16,i:22} : x);
+exports.fn16_23 = (x) => x == null ? null : (typeof x === 'object' ? {...x,b:16,i:23} : x);
+exports.fn16_24 = (x) => x == null ? null : (typeof x === 'object' ? {...x,b:16,i:24} : x);

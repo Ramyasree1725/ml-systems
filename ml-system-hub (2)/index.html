@@ -1,0 +1,2769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ML System Hub — Enterprise MLOps & Production Machine Learning Platform</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --sidebar-bg: #ffffff;
+      --surface: #ffffff;
+      --surface-hover: #f1f5f9;
+      --surface-active: #e0f2fe;
+      --border: #cbd5e1;
+      --border-subtle: #e2e8f0;
+      --text: #0f172a;
+      --text-muted: #334155;
+      --text-dim: #64748b;
+      --accent: #2563eb;
+      --accent-hover: #1d4ed8;
+      --success: #059669;
+      --warning: #d97706;
+      --danger: #dc2626;
+      --code-bg: #f1f5f9;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      font-size: 15px;
+      -webkit-font-smoothing: antialiased;
+      display: flex;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Clean Developer Sidebar */
+    aside {
+      width: 285px;
+      background-color: var(--sidebar-bg);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      height: 100vh;
+      position: sticky;
+      top: 0;
+      user-select: none;
+      box-shadow: 2px 0 6px rgba(0,0,0,0.03);
+    }
+
+    .sidebar-header {
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .workspace-switcher {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      text-decoration: none;
+      color: var(--text);
+      width: 100%;
+    }
+
+    .org-avatar {
+      width: 36px;
+      height: 36px;
+      background: #0f172a;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 15px;
+      font-family: var(--font-mono);
+      color: #ffffff;
+    }
+
+    .workspace-info {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.25;
+    }
+
+    .workspace-name {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--text);
+    }
+
+    .workspace-env {
+      font-size: 13px;
+      color: var(--text-dim);
+      font-family: var(--font-mono);
+      font-weight: 600;
+    }
+
+    .sidebar-nav {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .nav-group-title {
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-dim);
+      padding: 14px 10px 6px 10px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      border-radius: 8px;
+      color: var(--text-muted);
+      font-size: 15px;
+      font-weight: 600;
+      background: transparent;
+      border: 1px solid transparent;
+      cursor: pointer;
+      width: 100%;
+      text-align: left;
+      transition: all 0.12s ease;
+    }
+
+    .nav-item:hover {
+      background: var(--surface-hover);
+      color: var(--text);
+    }
+
+    .nav-item.active {
+      background: var(--surface-active);
+      color: var(--accent);
+      font-weight: 700;
+      border-color: #bfdbfe;
+    }
+
+    .nav-item-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .nav-svg-icon {
+      width: 19px;
+      height: 19px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: #64748b;
+    }
+
+    .nav-item.active .nav-svg-icon {
+      color: var(--accent);
+    }
+
+    .nav-badge {
+      font-size: 12px;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      background: var(--surface-hover);
+      border: 1px solid var(--border);
+      padding: 2px 7px;
+      border-radius: 4px;
+      color: var(--text-dim);
+    }
+
+    .nav-item.active .nav-badge {
+      background: #dbeafe;
+      color: var(--accent);
+    }
+
+    /* Sidebar Footer */
+    .sidebar-footer {
+      border-top: 1px solid var(--border);
+      padding: 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      background: #ffffff;
+    }
+
+    .quota-box {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 13px;
+    }
+
+    .quota-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .quota-bar {
+      height: 6px;
+      background: #e2e8f0;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .quota-fill {
+      height: 100%;
+      background: var(--accent);
+      width: 50%;
+    }
+
+    .user-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 10px;
+      cursor: pointer;
+      border-radius: 8px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .user-card:hover {
+      background: var(--surface-hover);
+      border-color: var(--border);
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .user-avatar {
+      width: 32px;
+      height: 32px;
+      background: var(--accent);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .user-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.2;
+    }
+
+    .user-role {
+      font-size: 12px;
+      color: var(--text-dim);
+      font-weight: 500;
+    }
+
+    /* Main Content Container */
+    .app-main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      background: var(--bg);
+    }
+
+    /* Top Bar */
+    .topbar {
+      background-color: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 40;
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .page-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.02em;
+    }
+
+    .cluster-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      color: #059669;
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-family: var(--font-mono);
+      font-weight: 700;
+    }
+
+    .cluster-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #059669;
+    }
+
+    .content-area {
+      padding: 2rem 2.25rem;
+      flex: 1;
+    }
+
+    .section-pane {
+      display: none;
+    }
+
+    .section-pane.active {
+      display: block;
+    }
+
+    /* Standard Cards */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.75rem;
+      margin-bottom: 1.75rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.01em;
+    }
+
+    .card-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-top: 4px;
+      font-weight: 500;
+    }
+
+    /* Manual Step Workflow Banner */
+    .workflow-steps {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 18px;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+    }
+
+    .workflow-step {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-dim);
+    }
+
+    .workflow-step.active {
+      color: var(--accent);
+    }
+
+    .workflow-step-num {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: #e2e8f0;
+      color: #334155;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .workflow-step.active .workflow-step-num {
+      background: var(--accent);
+      color: #ffffff;
+    }
+
+    .workflow-step-arrow {
+      color: #94a3b8;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    /* KPI Grid */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .kpi-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.4rem 1.6rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+    }
+
+    .kpi-lbl {
+      font-size: 13px;
+      color: var(--text-dim);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .kpi-num {
+      font-size: 32px;
+      font-weight: 900;
+      color: var(--text);
+      margin: 8px 0 4px 0;
+      font-family: var(--font-mono);
+      letter-spacing: -0.02em;
+    }
+
+    .kpi-sub {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 9px 16px;
+      font-size: 14px;
+      font-weight: 700;
+      border-radius: 8px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.15s ease;
+      font-family: inherit;
+    }
+
+    .btn-primary {
+      background: #0f172a;
+      color: #ffffff;
+    }
+
+    .btn-primary:hover {
+      background: #1e293b;
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: #ffffff;
+      color: var(--text);
+      border-color: var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: var(--surface-hover);
+      border-color: #94a3b8;
+    }
+
+    .btn-danger {
+      background: #fef2f2;
+      color: #dc2626;
+      border-color: #fecaca;
+    }
+
+    .btn-danger:hover {
+      background: #fee2e2;
+    }
+
+    .btn-sm {
+      padding: 6px 12px;
+      font-size: 13px;
+    }
+
+    /* Tables */
+    .table-container {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 14.5px;
+    }
+
+    th {
+      background: #f8fafc;
+      color: #334155;
+      font-weight: 800;
+      padding: 13px 16px;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border-subtle);
+      color: var(--text);
+    }
+
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #f8fafc; }
+
+    /* Tags & Badges */
+    .tag {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      border: 1px solid transparent;
+    }
+
+    .tag-prod {
+      background: #d1fae5;
+      color: #065f46;
+      border-color: #a7f3d0;
+    }
+
+    .tag-canary {
+      background: #dbeafe;
+      color: #1e40af;
+      border-color: #bfdbfe;
+    }
+
+    .tag-staging {
+      background: #fef3c7;
+      color: #92400e;
+      border-color: #fde68a;
+    }
+
+    .tag-framework {
+      background: #f1f5f9;
+      color: #1e293b;
+      border-color: #cbd5e1;
+    }
+
+    .code-pill {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: #1d4ed8;
+      background: #eff6ff;
+      padding: 3px 8px;
+      border-radius: 6px;
+      border: 1px solid #bfdbfe;
+      font-weight: 700;
+    }
+
+    /* Forms */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .form-item {
+      margin-bottom: 16px;
+    }
+
+    .form-item label {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 6px;
+    }
+
+    .form-input {
+      width: 100%;
+      background: #ffffff;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 10px 14px;
+      color: var(--text);
+      font-size: 14.5px;
+      font-family: inherit;
+      outline: none;
+      transition: all 0.15s ease;
+    }
+
+    .form-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    /* Split Testing / Visualizer */
+    .split-layout {
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 1.75rem;
+    }
+
+    /* Visual Decision Diagram Card (Replaced Raw JSON Output) */
+    .decision-visual-card {
+      background: #ffffff;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+    }
+
+    .decision-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .decision-badge-large {
+      padding: 8px 18px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 900;
+      font-family: var(--font-mono);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .decision-badge-retained {
+      background: #d1fae5;
+      color: #065f46;
+      border: 1.5px solid #a7f3d0;
+    }
+
+    .decision-badge-risk {
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1.5px solid #fecaca;
+    }
+
+    .decision-gauge-bar {
+      height: 10px;
+      background: #e2e8f0;
+      border-radius: 5px;
+      overflow: hidden;
+      margin: 8px 0 16px 0;
+    }
+
+    .decision-gauge-fill {
+      height: 100%;
+      transition: width 0.3s ease;
+    }
+
+    .decision-flow-diagram {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+      margin-top: 14px;
+      gap: 8px;
+    }
+
+    .decision-flow-node {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 12px;
+      text-align: center;
+      flex: 1;
+    }
+
+    .decision-flow-title {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--text-dim);
+      text-transform: uppercase;
+    }
+
+    .decision-flow-val {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text);
+      font-family: var(--font-mono);
+      margin-top: 2px;
+    }
+
+    /* Visual Architecture Pipeline Diagram */
+    .pipeline-diagram {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      overflow-x: auto;
+      padding: 16px 12px;
+      background: #f8fafc;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      margin-top: 14px;
+    }
+
+    .pipeline-node {
+      background: #ffffff;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 16px;
+      min-width: 130px;
+      text-align: center;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+      transition: all 0.2s;
+    }
+
+    .pipeline-node.active {
+      border-color: var(--accent);
+      background: #eff6ff;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25);
+    }
+
+    .pipeline-node-title {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      margin-bottom: 3px;
+    }
+
+    .pipeline-node-val {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text);
+      font-family: var(--font-mono);
+    }
+
+    .pipeline-arrow {
+      color: #94a3b8;
+      font-weight: 800;
+      font-size: 18px;
+    }
+
+    canvas {
+      width: 100%;
+      height: 200px;
+      background: #ffffff;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+    }
+
+    .auth-container {
+      max-width: 600px;
+      margin: 1.75rem auto;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 2.5rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+    }
+
+    /* Attribution Bar */
+    .shap-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 10px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .shap-val-pos {
+      color: #dc2626;
+      font-family: var(--font-mono);
+      font-weight: 800;
+      font-size: 14.5px;
+    }
+
+    .shap-val-neg {
+      color: #059669;
+      font-family: var(--font-mono);
+      font-weight: 800;
+      font-size: 14.5px;
+    }
+
+    /* Modal Backdrop */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(15, 23, 42, 0.5);
+      backdrop-filter: blur(3px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+    }
+
+    .modal-overlay.show { display: flex; }
+    .modal-box {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      width: 90%;
+      max-width: 540px;
+      padding: 2rem;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1.5rem 2.25rem;
+      text-align: center;
+      font-size: 13.5px;
+      color: var(--text-dim);
+      font-weight: 600;
+      margin-top: auto;
+      background: #ffffff;
+    }
+
+    @media (max-width: 900px) {
+      body { flex-direction: column; }
+      aside { width: 100%; height: auto; position: static; }
+      .kpi-grid { grid-template-columns: 1fr 1fr; }
+      .split-layout { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Clean Senior Developer Sidebar with Humanized SVG Icons -->
+  <aside>
+    <div class="sidebar-header">
+      <div class="workspace-switcher" onclick="switchNav('dashboard', 'Overview & Telemetry')">
+        <div class="org-avatar">ML</div>
+        <div class="workspace-info">
+          <span class="workspace-name" id="sideOrgName">ml-platform-hub</span>
+          <span class="workspace-env">us-east-1 &bull; prod</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Groups -->
+    <div class="sidebar-nav">
+      <div class="nav-group-title">WORKSPACE</div>
+      <button class="nav-item active" onclick="switchNav('dashboard', 'Overview & Telemetry')">
+        <div class="nav-item-left">
+          <span class="nav-svg-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="7" height="7"/>
+              <rect x="14" y="3" width="7" height="7"/>
+              <rect x="14" y="14" width="7" height="7"/>
+              <rect x="3" y="14" width="7" height="7"/>
+            </svg>
+          </span>
+          <span>Overview</span>
+        </div>
+      </button>
+
+      <div class="nav-group-title">MODELS & INFERENCE</div>
+      <button class="nav-item" onclick="switchNav('models', 'Model Registry & Deployments')">
+        <div class="nav-item-left">
+          <span class="nav-svg-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+              <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+              <line x1="12" y1="22.08" x2="12" y2="12"/>
+            </svg>
+          </span>
+          <span>Models & Deployments</span>
+        </div>
+        <span class="nav-badge" id="sideBadgeModels">5</span>
+      </button>
+      <button class="nav-item" onclick="switchNav('inference', 'Real-Time Inference Console')">
+        <div class="nav-item-left">
+          <span class="nav-svg-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+            </svg>
+          </span>
+          <span>Inference Console</span>
+        </div>
+      </button>
+      <button class="nav-item" onclick="switchNav('batch', 'Batch Inference Job Runner')">
+        <div class="nav-item-left">
+          <span class="nav-svg-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="16" y1="13" x2="8" y2="13"/>
+              <line x1="16" y1="17" x2="8" y2="17"/>
+              <polyline points="10 9 9 9 8 9"/>
+            </svg>
+          </span>
+          <span>Batch Inference</span>
+        </div>
+      </button>
+      <button class="nav-item" onclick="switchNav('training', 'Training & Hyperparameter Optimization')">
+        <div class="nav-item-left">
+          <span class="nav-svg-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="4" y1="21" x2="4" y2="14"/>
+              <line x1="4" y1="10" x2="4" y2="3"/>
+              <line x1="12" y1="21" x2="12" y2="12"/>
+              <line x1="12" y1="8" x2="12" y2="3"/>
+              <line x1="20" y1="21" x2="20" y2="16"/>
+              <line x1="20" y1="12" x2="20" y2="3"/>
+              <line x1="1" y1="14" x2="7" y2="14"/>
+              <line x1="9" y1="8" x2="15" y2="8"/>
+              <line x1="17" y1="16" x2="23" y2="16"/>
+            </svg>
+          </span>
+          <span>Training & Tuning</span>
+        </div>
+      </button>
+
+      <div class="nav-group-title">DATA & MONITORING</div>
+      <button class="nav-item" onclick="switchNav('drift', 'Data Drift & Distribution Monitor')">
+        <div class="nav-item-left">
+          <span class="nav-svg-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+            </svg>
+          </span>
+          <span>Data Drift Monitor</span>
+        </div>
+      </button>
+      <button class="nav-item" onclick="switchNav('features', 'Feature Store Catalog')">
+        <div class="nav-item-left">
+          <span class="nav-svg-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <ellipse cx="12" cy="5" rx="9" ry="3"/>
+              <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
+              <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+            </svg>
+          </span>
+          <span>Feature Store</span>
+        </div>
+        <span class="nav-badge" id="sideBadgeFeatures">3</span>
+      </button>
+      <button class="nav-item" onclick="switchNav('pipelines', 'MLOps Automated Pipelines')">
+        <div class="nav-item-left">
+          <span class="nav-svg-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="6" y1="3" x2="6" y2="15"/>
+              <circle cx="18" cy="6" r="3"/>
+              <circle cx="6" cy="18" r="3"/>
+              <path d="M18 9a9 9 0 0 1-9 9"/>
+            </svg>
+          </span>
+          <span>MLOps Pipelines</span>
+        </div>
+        <span class="nav-badge">3</span>
+      </button>
+
+      <div class="nav-group-title">MANAGEMENT</div>
+      <button class="nav-item" onclick="switchNav('team', 'Team & Permissions')">
+        <div class="nav-item-left">
+          <span class="nav-svg-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+          </span>
+          <span>Team & Access</span>
+        </div>
+      </button>
+      <button class="nav-item" onclick="switchNav('auth', 'User Registration & Access')">
+        <div class="nav-item-left">
+          <span class="nav-svg-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="8.5" cy="7" r="4"/>
+              <line x1="20" y1="8" x2="20" y2="14"/>
+              <line x1="23" y1="11" x2="17" y2="11"/>
+            </svg>
+          </span>
+          <span>User Registration</span>
+        </div>
+      </button>
+    </div>
+
+    <!-- Sidebar Footer -->
+    <div class="sidebar-footer">
+      <div class="quota-box">
+        <div class="quota-row">
+          <span>GPU / Pod Cluster</span>
+          <span style="color: var(--text); font-weight: 800;">4/8 Nodes (50%)</span>
+        </div>
+        <div class="quota-bar">
+          <div class="quota-fill"></div>
+        </div>
+      </div>
+
+      <div class="user-card" onclick="switchNav('auth', 'User Registration & Access')">
+        <div class="user-info">
+          <div class="user-avatar" id="avatarLetter">R</div>
+          <div>
+            <div class="user-name" id="sideUserName">Ramya Sri</div>
+            <div class="user-role" id="sideUserRole">ML Lead & Architect</div>
+          </div>
+        </div>
+        <button class="btn btn-secondary btn-sm" style="padding: 4px 10px;" onclick="event.stopPropagation(); switchNav('auth', 'User Registration & Access')">Switch</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main View Area -->
+  <div class="app-main">
+    <!-- Top Bar -->
+    <div class="topbar">
+      <div class="topbar-left">
+        <span class="page-title" id="currentSectionTitle">Overview & Telemetry</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 14px;">
+        <span class="cluster-pill">
+          <span class="cluster-dot"></span>
+          <span id="gatewayStatus">Connecting to Gateway...</span>
+        </span>
+        <button class="btn btn-secondary btn-sm" onclick="switchNav('auth', 'User Registration & Access')">User Account</button>
+        <button class="btn btn-primary btn-sm" onclick="openNewModelModal()">+ Register Model</button>
+      </div>
+    </div>
+
+    <!-- Content Pages -->
+    <div class="content-area">
+      <!-- 1. DASHBOARD -->
+      <section id="pane-dashboard" class="section-pane active">
+        <div class="kpi-grid">
+          <div class="kpi-box">
+            <div class="kpi-lbl">Active Models</div>
+            <div class="kpi-num" id="kpiCountModels">5</div>
+            <div class="kpi-sub">3 Prod, 1 Canary, 1 Staging</div>
+          </div>
+          <div class="kpi-box">
+            <div class="kpi-lbl">Total Inferences (24h)</div>
+            <div class="kpi-num" id="kpiCountInferences">1,420</div>
+            <div class="kpi-sub">+12.4% vs yesterday</div>
+          </div>
+          <div class="kpi-box">
+            <div class="kpi-lbl">Avg P95 Latency</div>
+            <div class="kpi-num" id="kpiP95Latency">11.4 ms</div>
+            <div class="kpi-sub" style="color: var(--success); font-weight: 700;">SLA Target &lt; 25ms</div>
+          </div>
+          <div class="kpi-box">
+            <div class="kpi-lbl">Cluster Health</div>
+            <div class="kpi-num" style="color: var(--success);">99.98%</div>
+            <div class="kpi-sub">Zero pod failures</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Production Model Endpoints</div>
+              <div class="card-desc">Active machine learning services deployed to inference runtime</div>
+            </div>
+            <button class="btn btn-secondary btn-sm" onclick="syncData()">Refresh Data</button>
+          </div>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Model Identifier</th>
+                  <th>Version</th>
+                  <th>Framework</th>
+                  <th>Task</th>
+                  <th>Accuracy</th>
+                  <th>Traffic Split</th>
+                  <th>Stage</th>
+                  <th>Manual Actions</th>
+                </tr>
+              </thead>
+              <tbody id="dashModelsTbody">
+                <!-- Dynamically Populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Feature Store Online Syncs</div>
+              <div class="card-desc">Point-in-time correct entity stores and streaming feature groups</div>
+            </div>
+            <button class="btn btn-secondary btn-sm" onclick="switchNav('features', 'Feature Store Catalog')">View Features →</button>
+          </div>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Feature Group</th>
+                  <th>Entity Key</th>
+                  <th>Feature Count</th>
+                  <th>Storage Backend</th>
+                  <th>Sync Schedule</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="dashFeaturesTbody">
+                <!-- Dynamically Populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. MODEL REGISTRY & CANARY DEPLOYMENTS -->
+      <section id="pane-models" class="section-pane">
+        <div class="workflow-steps">
+          <div class="workflow-step active"><span class="workflow-step-num">1</span> Model Versioning</div>
+          <div class="workflow-step-arrow">➔</div>
+          <div class="workflow-step active"><span class="workflow-step-num">2</span> Staging Validation</div>
+          <div class="workflow-step-arrow">➔</div>
+          <div class="workflow-step active"><span class="workflow-step-num">3</span> Canary Traffic Split</div>
+          <div class="workflow-step-arrow">➔</div>
+          <div class="workflow-step active"><span class="workflow-step-num">4</span> Production Gate</div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Model Registry & Lifecycle Gates</div>
+              <div class="card-desc">Manage versions, benchmark accuracy metrics, promote between stages, or initiate rollbacks</div>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="openNewModelModal()">+ Register Model</button>
+          </div>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Model Name & ID</th>
+                  <th>Version</th>
+                  <th>Framework</th>
+                  <th>Accuracy</th>
+                  <th>Latency</th>
+                  <th>Traffic Split</th>
+                  <th>Stage</th>
+                  <th>Manual Actions</th>
+                </tr>
+              </thead>
+              <tbody id="registryModelsTbody">
+                <!-- Dynamically Populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Canary Traffic Split Controller</div>
+              <div class="card-desc">Human-controlled slider to route live inference queries between stable baseline and canary candidate</div>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 24px; padding: 12px 0;">
+            <div style="flex: 1;">
+              <div style="display: flex; justify-content: space-between; font-size: 15px; margin-bottom: 10px; font-weight: 700;">
+                <span>Stable Baseline (v2.4.0): <strong id="trafficBaselineLbl" style="color: #0f172a;">90%</strong></span>
+                <span>Canary Candidate (v2.5.0-rc1): <strong id="trafficCanaryLbl" style="color: #2563eb;">10%</strong></span>
+              </div>
+              <input type="range" id="trafficSlider" min="0" max="100" value="90" style="width: 100%; cursor: pointer;" oninput="updateTrafficSplit(this.value)">
+            </div>
+            <button class="btn btn-danger btn-sm" onclick="rollbackCanary()">Instant Rollback (100% Stable)</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. REAL-TIME INFERENCE CONSOLE (With Visual Scorecard Diagram) -->
+      <section id="pane-inference" class="section-pane">
+        <div class="workflow-steps">
+          <div class="workflow-step active"><span class="workflow-step-num">1</span> Choose Endpoint</div>
+          <div class="workflow-step-arrow">➔</div>
+          <div class="workflow-step active"><span class="workflow-step-num">2</span> Enter Feature Parameters</div>
+          <div class="workflow-step-arrow">➔</div>
+          <div class="workflow-step active"><span class="workflow-step-num">3</span> Execute Inference</div>
+          <div class="workflow-step-arrow">➔</div>
+          <div class="workflow-step active"><span class="workflow-step-num">4</span> Inspect Visual Scorecard & SHAP Decision</div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Real-Time Inference & Explainability Console</div>
+              <div class="card-desc">Send test payloads, inspect prediction probabilities, and view visual decision scorecards</div>
+            </div>
+          </div>
+
+          <div class="split-layout">
+            <div>
+              <div class="form-item">
+                <label>Target Model Endpoint</label>
+                <select id="selInferModel" class="form-input" onchange="renderInferenceFields()">
+                  <option value="mdl-churn-v2">Customer Churn Predictor (PyTorch v2.4.0)</option>
+                  <option value="mdl-fraud-xgb">Real-Time Fraud Detection (XGBoost v3.1.2)</option>
+                  <option value="mdl-bert-sentiment">NLP Feedback Sentiment (HuggingFace v1.0.5)</option>
+                </select>
+              </div>
+
+              <div id="dynamicFormInputs">
+                <!-- Injected via JS -->
+              </div>
+
+              <!-- Manual Probability Decision Threshold Slider -->
+              <div class="form-item" style="background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; padding: 12px; margin-top: 10px;">
+                <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 700; margin-bottom: 6px;">
+                  <span>Manual Risk Threshold Gate</span>
+                  <span id="manualThresholdLbl" style="font-family: var(--font-mono); color: var(--accent);">0.45</span>
+                </div>
+                <input type="range" id="manualThresholdSlider" min="0.10" max="0.90" step="0.05" value="0.45" style="width: 100%; cursor: pointer;" oninput="updateManualThreshold(this.value)">
+                <div style="font-size: 12px; color: var(--text-dim); margin-top: 4px;">Human engineer controls decision sensitivity cutoff.</div>
+              </div>
+
+              <button class="btn btn-primary" style="width: 100%; margin-top: 12px; padding: 12px;" onclick="sendInferenceRequest()">
+                Execute Live Inference
+              </button>
+            </div>
+
+            <div>
+              <!-- Visual Scorecard Diagram (Replaced Raw JSON Text) -->
+              <div class="decision-visual-card">
+                <div class="decision-header">
+                  <div>
+                    <div style="font-size: 12px; font-weight: 800; color: var(--text-dim); text-transform: uppercase;">Prediction Outcome</div>
+                    <div style="font-size: 13px; color: var(--text-muted); margin-top: 2px;">Model Evaluation Result</div>
+                  </div>
+                  <div id="decisionBadge" class="decision-badge-large decision-badge-retained">
+                    <span>●</span> <span id="decisionText">RETAINED</span>
+                  </div>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; font-size: 14px; font-weight: 700; color: var(--text);">
+                  <span>Confidence Probability</span>
+                  <span id="confidencePercent" class="font-mono">94.2%</span>
+                </div>
+                <div class="decision-gauge-bar">
+                  <div id="decisionGauge" class="decision-gauge-fill" style="width: 94.2%; background: #059669;"></div>
+                </div>
+
+                <!-- Decision Flow Diagram -->
+                <div class="decision-flow-diagram">
+                  <div class="decision-flow-node">
+                    <div class="decision-flow-title">Model ID</div>
+                    <div class="decision-flow-val" id="dispModelId">mdl-churn-v2</div>
+                  </div>
+                  <div class="pipeline-arrow">➔</div>
+                  <div class="decision-flow-node">
+                    <div class="decision-flow-title">Inference Time</div>
+                    <div class="decision-flow-val" id="dispLatency">6 ms</div>
+                  </div>
+                  <div class="pipeline-arrow">➔</div>
+                  <div class="decision-flow-node">
+                    <div class="decision-flow-title">SLA Status</div>
+                    <div class="decision-flow-val" style="color: var(--success);">Passed (&lt;25ms)</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Feature Attribution & SHAP Decision Waterfall -->
+              <div style="margin-top: 16px;">
+                <div style="font-size: 13px; font-weight: 800; color: #334155; text-transform: uppercase; margin-bottom: 8px;">
+                  Feature Attribution & SHAP Decision Waterfall
+                </div>
+                <div id="shapAttributionArea">
+                  <div class="shap-row">
+                    <span>Support Tickets Volume (Risk Factor)</span>
+                    <span class="shap-val-pos">+35.2% Churn Probability</span>
+                  </div>
+                  <div class="shap-row">
+                    <span>Customer Tenure (Loyalty Offset)</span>
+                    <span class="shap-val-neg">-21.0% Churn Offset</span>
+                  </div>
+                  <div class="shap-row">
+                    <span>Monthly Spend Consistency</span>
+                    <span class="shap-val-neg">-8.4% Retention Driver</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. BATCH INFERENCE JOB RUNNER -->
+      <section id="pane-batch" class="section-pane">
+        <div class="workflow-steps">
+          <div class="workflow-step active"><span class="workflow-step-num">1</span> Load Batch Rows</div>
+          <div class="workflow-step-arrow">➔</div>
+          <div class="workflow-step active"><span class="workflow-step-num">2</span> Dispatch Worker Pool</div>
+          <div class="workflow-step-arrow">➔</div>
+          <div class="workflow-step active"><span class="workflow-step-num">3</span> Calculate Aggregate Cohort</div>
+          <div class="workflow-step-arrow">➔</div>
+          <div class="workflow-step active"><span class="workflow-step-num">4</span> Export Verified CSV</div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Batch Inference Job Processing Engine</div>
+              <div class="card-desc">Run offline scoring jobs over large record batches, inspect prediction distributions, and export CSVs</div>
+            </div>
+            <div style="display: flex; gap: 10px;">
+              <button class="btn btn-secondary btn-sm" onclick="generateBatchData(50)">Generate 50 Records</button>
+              <button class="btn btn-primary btn-sm" onclick="runBatchScoring()">Execute Batch Scoring (Worker Pool)</button>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 16px; margin-bottom: 18px;">
+            <div class="kpi-box" style="flex: 1; padding: 14px 18px;">
+              <div class="kpi-lbl">Batch Records</div>
+              <div class="kpi-num" id="batchTotalCount" style="font-size: 26px;">50 Rows</div>
+            </div>
+            <div class="kpi-box" style="flex: 1; padding: 14px 18px;">
+              <div class="kpi-lbl">Identified Churn Risks</div>
+              <div class="kpi-num" id="batchRiskCount" style="font-size: 26px; color: var(--danger);">--</div>
+            </div>
+            <div class="kpi-box" style="flex: 1; padding: 14px 18px;">
+              <div class="kpi-lbl">Retained Customers</div>
+              <div class="kpi-num" id="batchRetainCount" style="font-size: 26px; color: var(--success);">--</div>
+            </div>
+            <div class="kpi-box" style="flex: 1; padding: 14px 18px;">
+              <div class="kpi-lbl">Export Scored Batch</div>
+              <button class="btn btn-secondary btn-sm" style="margin-top: 8px; width: 100%;" onclick="downloadBatchCSV()">Download CSV</button>
+            </div>
+          </div>
+
+          <div class="table-container" style="max-height: 380px; overflow-y: auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th>Row #</th>
+                  <th>Customer ID</th>
+                  <th>Tenure (Months)</th>
+                  <th>Monthly Spend</th>
+                  <th>Tickets (30d)</th>
+                  <th>Prediction</th>
+                  <th>Confidence Score</th>
+                  <th>Manual Action</th>
+                </tr>
+              </thead>
+              <tbody id="batchResultsTbody">
+                <!-- Dynamically Populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. TRAINING & HYPERPARAMETER TUNING -->
+      <section id="pane-training" class="section-pane">
+        <div class="workflow-steps">
+          <div class="workflow-step active"><span class="workflow-step-num">1</span> Choose Dataset & Architecture</div>
+          <div class="workflow-step-arrow">➔</div>
+          <div class="workflow-step active"><span class="workflow-step-num">2</span> Set Hyperparameters</div>
+          <div class="workflow-step-arrow">➔</div>
+          <div class="workflow-step active"><span class="workflow-step-num">3</span> Watch Loss Curve & Pipeline Diagram</div>
+          <div class="workflow-step-arrow">➔</div>
+          <div class="workflow-step active"><span class="workflow-step-num">4</span> Best Trial Sign-off</div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Model Training & Convergence Visualizer</div>
+              <div class="card-desc">Execute training runs, monitor loss curves in real-time, and observe the live architecture pipeline diagram</div>
+            </div>
+          </div>
+
+          <div class="split-layout">
+            <div>
+              <div class="form-item">
+                <label>Training Dataset</label>
+                <select class="form-input">
+                  <option>customer_churn_q3.parquet (10,000 samples)</option>
+                  <option>transactions_fraud_stream.csv (50,000 samples)</option>
+                </select>
+              </div>
+
+              <div class="form-item">
+                <label>Architecture</label>
+                <select id="trainArchSelect" class="form-input">
+                  <option value="Deep MLP (PyTorch)">Deep Multi-Layer Perceptron (PyTorch)</option>
+                  <option value="XGBoost Trees">Gradient Boosted Trees (XGBoost)</option>
+                </select>
+              </div>
+
+              <div class="form-grid">
+                <div class="form-item">
+                  <label>Learning Rate</label>
+                  <input type="number" value="0.01" class="form-input">
+                </div>
+                <div class="form-item">
+                  <label>Epochs</label>
+                  <input type="number" id="inpEpochCount" value="25" min="5" max="50" class="form-input">
+                </div>
+              </div>
+
+              <button class="btn btn-primary" id="btnTrainRun" style="width: 100%; margin-top: 8px; padding: 12px;" onclick="runTrainingExecution()">
+                Start Training Run
+              </button>
+            </div>
+
+            <div>
+              <div style="display: flex; justify-content: space-between; font-size: 14px; font-weight: 700; color: #334155; margin-bottom: 8px;">
+                <span>Convergence: Loss vs Validation Accuracy</span>
+                <span id="trainEpochStatus" style="font-family: var(--font-mono); color: var(--text);">Ready</span>
+              </div>
+              <canvas id="lossChartCanvas" width="600" height="190"></canvas>
+
+              <!-- Visual Architecture Flow Diagram -->
+              <div style="font-size: 13px; font-weight: 800; color: #334155; text-transform: uppercase; margin-top: 16px; margin-bottom: 6px;">
+                Live Neural Architecture & Training Flow Diagram
+              </div>
+              <div class="pipeline-diagram">
+                <div class="pipeline-node active" id="nodeData">
+                  <div class="pipeline-node-title">1. Dataset</div>
+                  <div class="pipeline-node-val">80/20 Split</div>
+                </div>
+                <div class="pipeline-arrow">➔</div>
+                <div class="pipeline-node" id="nodeNorm">
+                  <div class="pipeline-node-title">2. Scaling</div>
+                  <div class="pipeline-node-val">StandardScaler</div>
+                </div>
+                <div class="pipeline-arrow">➔</div>
+                <div class="pipeline-node" id="nodeLayer1">
+                  <div class="pipeline-node-title">3. Hidden L1</div>
+                  <div class="pipeline-node-val">256 ReLU</div>
+                </div>
+                <div class="pipeline-arrow">➔</div>
+                <div class="pipeline-node" id="nodeDrop">
+                  <div class="pipeline-node-title">4. Regularize</div>
+                  <div class="pipeline-node-val">Dropout 0.20</div>
+                </div>
+                <div class="pipeline-arrow">➔</div>
+                <div class="pipeline-node" id="nodeOutput">
+                  <div class="pipeline-node-title">5. Softmax</div>
+                  <div class="pipeline-node-val" id="nodeAccVal">Ready</div>
+                </div>
+                <div class="pipeline-arrow">➔</div>
+                <div class="pipeline-node" id="nodeGate">
+                  <div class="pipeline-node-title">6. Checkpoint</div>
+                  <div class="pipeline-node-val" id="nodeLossVal">Ready</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hyperparameter Trials Table -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Hyperparameter Optimization (Optuna / Bayesian Search Trials)</div>
+              <div class="card-desc">Parallel trials evaluating learning rate, tree depth, and dropout regularization</div>
+            </div>
+            <button class="btn btn-secondary btn-sm" onclick="runHyperparamTrials()">Run 5 Optimization Trials</button>
+          </div>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Trial #</th>
+                  <th>Learning Rate</th>
+                  <th>Max Depth / Layers</th>
+                  <th>Dropout / L2</th>
+                  <th>Validation Loss</th>
+                  <th>Accuracy</th>
+                  <th>Trial Status</th>
+                  <th>Manual Action</th>
+                </tr>
+              </thead>
+              <tbody id="hyperparamTbody">
+                <tr>
+                  <td><span class="code-pill">Trial 01</span></td>
+                  <td class="font-mono">0.001</td>
+                  <td>[128, 64, 32]</td>
+                  <td>0.20</td>
+                  <td class="font-mono">0.0842</td>
+                  <td><strong style="color: var(--success); font-family: var(--font-mono);">94.8%</strong></td>
+                  <td><span class="tag tag-prod">Best Checkpoint</span></td>
+                  <td><button class="btn btn-secondary btn-sm" onclick="alert('Checkpoint Trial 01 manually signed off & promoted to staging.')">Promote</button></td>
+                </tr>
+                <tr>
+                  <td><span class="code-pill">Trial 02</span></td>
+                  <td class="font-mono">0.005</td>
+                  <td>[256, 128, 64]</td>
+                  <td>0.35</td>
+                  <td class="font-mono">0.1120</td>
+                  <td class="font-mono">92.4%</td>
+                  <td><span class="tag tag-staging">Completed</span></td>
+                  <td><button class="btn btn-secondary btn-sm" onclick="alert('Trial 02 marked for review.')">Review</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. DATA DRIFT & DISTRIBUTION MONITOR -->
+      <section id="pane-drift" class="section-pane">
+        <div class="workflow-steps">
+          <div class="workflow-step active"><span class="workflow-step-num">1</span> Select Feature Distribution</div>
+          <div class="workflow-step-arrow">➔</div>
+          <div class="workflow-step active"><span class="workflow-step-num">2</span> Run Kolmogorov-Smirnov Test</div>
+          <div class="workflow-step-arrow">➔</div>
+          <div class="workflow-step active"><span class="workflow-step-num">3</span> Assess PSI Severity</div>
+          <div class="workflow-step-arrow">➔</div>
+          <div class="workflow-step active"><span class="workflow-step-num">4</span> Human Sign-off to Retrain</div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Data Drift & Feature Distribution Monitor</div>
+              <div class="card-desc">Kolmogorov-Smirnov (KS-Test) & Population Stability Index (PSI) tracking training vs live inference distribution</div>
+            </div>
+            <button class="btn btn-danger btn-sm" onclick="triggerDriftAlertRetrain()">Trigger Auto-Retrain Pipeline</button>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 340px 1fr; gap: 1.75rem;">
+            <div>
+              <div class="form-item">
+                <label>Select Feature to Analyze</label>
+                <select id="driftFeatureSelect" class="form-input" onchange="renderDriftChart()">
+                  <option value="spend">Monthly Spend (USD)</option>
+                  <option value="tickets">Support Tickets (30d)</option>
+                  <option value="tenure">Customer Tenure (Months)</option>
+                </select>
+              </div>
+
+              <div class="kpi-box" style="margin-bottom: 14px;">
+                <div class="kpi-lbl">KS-Test p-value</div>
+                <div class="kpi-num" id="driftPVal" style="font-size: 26px; color: var(--warning);">0.038</div>
+                <div class="kpi-sub" style="color: var(--warning); font-weight: 700;">&lt; 0.05 (Drift Detected)</div>
+              </div>
+
+              <div class="kpi-box">
+                <div class="kpi-lbl">Population Stability Index (PSI)</div>
+                <div class="kpi-num" id="driftPsiVal" style="font-size: 26px;">0.24</div>
+                <div class="kpi-sub" style="font-weight: 600;">Moderate distribution shift</div>
+              </div>
+            </div>
+
+            <div>
+              <div style="display: flex; justify-content: space-between; font-size: 14px; font-weight: 700; color: #334155; margin-bottom: 8px;">
+                <span>Feature Distribution Density: Baseline vs Current 7-Day Window</span>
+                <span><span style="color: #2563eb;">■ Baseline</span> &bull; <span style="color: #d97706;">■ Live Serving</span></span>
+              </div>
+              <canvas id="driftCanvas" width="600" height="200"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7. FEATURE STORE -->
+      <section id="pane-features" class="section-pane">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Feature Store Catalog</div>
+              <div class="card-desc">Managed entity feature definitions for offline training and online serving</div>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="openNewFeatureModal()">+ Add Feature Group</button>
+          </div>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Group Identifier</th>
+                  <th>Primary Entity</th>
+                  <th>Features Indexed</th>
+                  <th>Sample Features</th>
+                  <th>Target Storage</th>
+                  <th>Sync Schedule</th>
+                  <th>Manual Action</th>
+                </tr>
+              </thead>
+              <tbody id="featuresFullTbody">
+                <!-- Dynamically Populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- 8. PIPELINES -->
+      <section id="pane-pipelines" class="section-pane">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Automated MLOps Pipelines (DAGs)</div>
+              <div class="card-desc">Orchestrated workflows for data validation, distributed training, quality gates, and automated deployment</div>
+            </div>
+          </div>
+          <div id="pipelinesListArea" style="display: flex; flex-direction: column; gap: 14px;">
+            <!-- Dynamically Populated -->
+          </div>
+        </div>
+      </section>
+
+      <!-- 9. TEAM & PERMISSIONS -->
+      <section id="pane-team" class="section-pane">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Team Members & Permissions</div>
+              <div class="card-desc">Engineers and researchers with deployment and registry access</div>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="switchNav('auth', 'User Registration & Access')">+ Register New Member</button>
+          </div>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>User ID</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Assigned Role</th>
+                  <th>Organization</th>
+                  <th>Joined Date</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="teamTbody">
+                <!-- Dynamically Populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- 10. USER REGISTRATION PORTAL -->
+      <section id="pane-auth" class="section-pane">
+        <div class="auth-container">
+          <div style="margin-bottom: 2rem; text-align: left;">
+            <h2 style="font-size: 22px; font-weight: 800; color: var(--text); letter-spacing: -0.01em;">User Registration & Access Portal</h2>
+            <p style="font-size: 14.5px; color: var(--text-muted); margin-top: 6px;">
+              Register an engineer account or invite team members to the ML Platform workspace.
+            </p>
+          </div>
+
+          <form onsubmit="handleRegistrationSubmit(event)">
+            <div class="form-item">
+              <label>Full Name</label>
+              <input type="text" id="regAuthName" class="form-input" placeholder="e.g. Ramya Sri" required>
+            </div>
+
+            <div class="form-item">
+              <label>Work Email Address</label>
+              <input type="email" id="regAuthEmail" class="form-input" placeholder="e.g. ramya@mlhub.ai" required>
+            </div>
+
+            <div class="form-grid">
+              <div class="form-item">
+                <label>Organization / Team</label>
+                <input type="text" id="regAuthOrg" class="form-input" value="ml-platform-hub" required>
+              </div>
+              <div class="form-item">
+                <label>Assigned Engineering Role</label>
+                <select id="regAuthRole" class="form-input">
+                  <option value="ML Lead & Architect">ML Lead & Architect</option>
+                  <option value="Senior ML Engineer">Senior ML Engineer</option>
+                  <option value="Data Scientist">Data Scientist</option>
+                  <option value="MLOps Platform Engineer">MLOps Platform Engineer</option>
+                  <option value="Research Scientist">Research Scientist</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-item">
+              <label>API Key Provisioning</label>
+              <div style="display: flex; gap: 12px;">
+                <input type="text" id="regAuthKey" class="form-input font-mono" readonly value="session-token-active" style="background: #eff6ff; color: #1d4ed8; font-family: var(--font-mono); font-weight: 700;">
+                <button type="button" class="btn btn-secondary btn-sm" onclick="generateNewKey()">Regenerate</button>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 14px; margin-top: 2rem;">
+              <button type="submit" class="btn btn-primary" style="flex: 1; padding: 12px;">
+                Complete Registration
+              </button>
+              <button type="button" class="btn btn-secondary" onclick="switchNav('dashboard', 'Overview & Telemetry')">
+                Back to Dashboard
+              </button>
+            </div>
+          </form>
+
+          <div id="regSuccessBanner" style="display: none; margin-top: 1.5rem; padding: 14px 16px; background: #d1fae5; border: 1px solid #a7f3d0; border-radius: 8px; color: #065f46; font-size: 14.5px; font-weight: 600;">
+            ✓ Registration saved successfully to backend! Signed in as active engineer.
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      ML System Hub &bull; Production Platform &bull; Local Gateway: <span class="code-pill">http://localhost:3001</span>
+    </footer>
+  </div>
+
+  <!-- REGISTER MODEL MODAL -->
+  <div class="modal-overlay" id="newModelModal">
+    <div class="modal-box">
+      <div class="card-header" style="margin-bottom: 1.5rem;">
+        <div class="card-title">Register New Model Artifact</div>
+        <button class="btn btn-secondary btn-sm" onclick="closeNewModelModal()">Cancel</button>
+      </div>
+
+      <form onsubmit="handleModelRegister(event)">
+        <div class="form-item">
+          <label>Model Name</label>
+          <input type="text" id="regMName" class="form-input" placeholder="e.g. Sales Forecast LSTM" required>
+        </div>
+        <div class="form-grid">
+          <div class="form-item">
+            <label>Version</label>
+            <input type="text" id="regMVer" class="form-input" value="1.0.0" required>
+          </div>
+          <div class="form-item">
+            <label>Framework</label>
+            <select id="regMFramework" class="form-input">
+              <option value="PyTorch">PyTorch</option>
+              <option value="TensorFlow">TensorFlow</option>
+              <option value="XGBoost">XGBoost</option>
+              <option value="Scikit-Learn">Scikit-Learn</option>
+              <option value="HuggingFace">HuggingFace / ONNX</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="form-item">
+            <label>Accuracy (0.00 - 1.00)</label>
+            <input type="number" id="regMAcc" class="form-input" value="0.94" step="0.01" min="0" max="1">
+          </div>
+          <div class="form-item">
+            <label>Deployment Stage</label>
+            <select id="regMStage" class="form-input">
+              <option value="Production">Production</option>
+              <option value="Canary">Canary</option>
+              <option value="Staging">Staging</option>
+              <option value="Archived">Archived</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-item">
+          <label>Task Description</label>
+          <input type="text" id="regMDesc" class="form-input" placeholder="Task summary">
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 1.75rem;">
+          <button type="button" class="btn btn-secondary" onclick="closeNewModelModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Register Artifact</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ADD FEATURE MODAL -->
+  <div class="modal-overlay" id="newFeatureModal">
+    <div class="modal-box">
+      <div class="card-header" style="margin-bottom: 1.5rem;">
+        <div class="card-title">Add Feature Group</div>
+        <button class="btn btn-secondary btn-sm" onclick="closeNewFeatureModal()">Cancel</button>
+      </div>
+
+      <form onsubmit="handleFeatureAdd(event)">
+        <div class="form-item">
+          <label>Group Identifier</label>
+          <input type="text" id="regFName" class="form-input" placeholder="e.g. user_device_metrics" required>
+        </div>
+        <div class="form-item">
+          <label>Primary Entity</label>
+          <input type="text" id="regFEntity" class="form-input" placeholder="e.g. user_id" required>
+        </div>
+        <div class="form-item">
+          <label>Indexed Features (comma-separated)</label>
+          <input type="text" id="regFList" class="form-input" value="device_type, app_version_code, session_depth" required>
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 1.75rem;">
+          <button type="button" class="btn btn-secondary" onclick="closeNewFeatureModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Add Group</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // State Store
+    const state = {
+      isBackendAvailable: false,
+      backendBaseUrl: 'http://localhost:3001',
+      manualThreshold: 0.45,
+      user: JSON.parse(localStorage.getItem('mlhub_user') || '{"name":"Ramya Sri","email":"ramya@mlhub.ai","role":"ML Lead & Architect","organization":"ml-platform-hub","apiKey":"session-token-active"}'),
+      models: [
+        {
+          id: 'mdl-churn-v2',
+          name: 'Customer Churn Predictor',
+          version: '2.4.0',
+          framework: 'PyTorch',
+          status: 'Production',
+          trafficSplit: 90,
+          task: 'Binary Classification',
+          accuracy: 0.948,
+          latency: '12ms',
+          description: 'Identifies high-risk customer churn via 30-day usage and engagement signals.'
+        },
+        {
+          id: 'mdl-churn-v2-canary',
+          name: 'Customer Churn Predictor (Canary)',
+          version: '2.5.0-rc1',
+          framework: 'PyTorch',
+          status: 'Canary',
+          trafficSplit: 10,
+          task: 'Binary Classification',
+          accuracy: 0.962,
+          latency: '9ms',
+          description: 'Optimized quantized weights with enhanced recency features.'
+        },
+        {
+          id: 'mdl-fraud-xgb',
+          name: 'Real-Time Fraud Detection',
+          version: '3.1.2',
+          framework: 'XGBoost',
+          status: 'Production',
+          trafficSplit: 100,
+          task: 'Anomaly Detection',
+          accuracy: 0.982,
+          latency: '6ms',
+          description: 'Sub-10ms card transaction fraud scoring with velocity aggregates.'
+        },
+        {
+          id: 'mdl-bert-sentiment',
+          name: 'NLP Feedback Sentiment',
+          version: '1.0.5',
+          framework: 'HuggingFace (ONNX)',
+          status: 'Staging',
+          trafficSplit: 0,
+          task: 'NLP / Text Classification',
+          accuracy: 0.915,
+          latency: '35ms',
+          description: 'Classifies support tickets and customer reviews into sentiment categories.'
+        },
+        {
+          id: 'mdl-recs-ranker',
+          name: 'Product Recommendation Ranker',
+          version: '4.0.1',
+          framework: 'TensorFlow',
+          status: 'Production',
+          trafficSplit: 100,
+          task: 'Ranking / RecSys',
+          accuracy: 0.897,
+          latency: '18ms',
+          description: 'Two-tower collaborative filtering & content-based deep ranking network.'
+        }
+      ],
+      features: [
+        {
+          groupName: 'customer_behavioral_features',
+          entity: 'user_id',
+          featuresCount: 14,
+          sampleFeatures: ['tenure_months', 'avg_monthly_spend', 'login_freq_30d', 'support_tickets_count'],
+          storageType: 'Redis + DynamoDB',
+          updateFrequency: 'Hourly',
+          lastSynced: '10 mins ago'
+        },
+        {
+          groupName: 'transaction_velocity_features',
+          entity: 'account_id',
+          featuresCount: 22,
+          sampleFeatures: ['amount_usd', 'is_international', 'velocity_1h', 'device_trust_score'],
+          storageType: 'Kafka + Feast',
+          updateFrequency: 'Real-time Streaming',
+          lastSynced: '1 min ago'
+        },
+        {
+          groupName: 'interaction_session_features',
+          entity: 'session_id',
+          featuresCount: 8,
+          sampleFeatures: ['page_views_count', 'dwell_time_seconds', 'cart_value'],
+          storageType: 'Snowflake / BigQuery',
+          updateFrequency: 'Daily Batch',
+          lastSynced: '3 hours ago'
+        }
+      ],
+      pipelines: [
+        {
+          id: 'pipe-churn-retrain',
+          name: 'Daily Churn Model Retraining',
+          type: 'Training Pipeline',
+          status: 'Succeeded',
+          lastRun: 'Today, 04:00 AM',
+          duration: '4m 32s',
+          trigger: 'Cron (Daily)',
+          steps: ['Data Validation', 'Feature Extraction', 'Model Training', 'Quality Gate', 'Registry Push']
+        },
+        {
+          id: 'pipe-fraud-stream',
+          name: 'Fraud Feature Aggregation',
+          type: 'Streaming Pipeline',
+          status: 'Running',
+          lastRun: 'Continuous',
+          duration: 'Active (24h)',
+          trigger: 'Kafka Event Stream',
+          steps: ['Window Aggregation', 'Feature Store Write', 'Drift Monitoring']
+        },
+        {
+          id: 'pipe-eval-harness',
+          name: 'Model Regression & Drift Eval',
+          type: 'Evaluation Pipeline',
+          status: 'Succeeded',
+          lastRun: 'Yesterday, 11:30 PM',
+          duration: '8m 15s',
+          trigger: 'Registry Webhook',
+          steps: ['Benchmark Test Set', 'Fairness Metrics', 'Latency Profiling', 'Sign-off']
+        }
+      ],
+      team: [
+        { id: 'usr-1', name: 'Ramya Sri', email: 'ramya@mlhub.ai', role: 'ML Lead & Architect', organization: 'ml-platform-hub', joined: '2026-08-30' },
+        { id: 'usr-2', name: 'Alex Rivera', email: 'alex@mlhub.ai', role: 'MLOps Engineer', organization: 'ml-platform-hub', joined: '2026-08-31' }
+      ],
+      batchRows: []
+    };
+
+    function apiUrl(path) {
+      if (window.location.protocol.startsWith('http')) return path;
+      return `${state.backendBaseUrl}${path}`;
+    }
+
+    // Navigation Switcher
+    function switchNav(sectionId, title) {
+      document.querySelectorAll('.section-pane').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+
+      const pane = document.getElementById(`pane-${sectionId}`);
+      if (pane) pane.classList.add('active');
+
+      const btn = Array.from(document.querySelectorAll('.nav-item')).find(b => b.getAttribute('onclick')?.includes(sectionId));
+      if (btn) btn.classList.add('active');
+
+      if (title) document.getElementById('currentSectionTitle').textContent = title;
+
+      if (sectionId === 'dashboard') renderDashboard();
+      if (sectionId === 'models') renderModelsTable();
+      if (sectionId === 'batch') generateBatchData(50);
+      if (sectionId === 'drift') renderDriftChart();
+      if (sectionId === 'features') renderFeaturesTable();
+      if (sectionId === 'pipelines') renderPipelines();
+      if (sectionId === 'team') renderTeam();
+      if (sectionId === 'auth') populateAuthForm();
+      if (sectionId === 'inference') renderInferenceFields();
+      if (sectionId === 'training') drawLossGraph([], []);
+    }
+
+    // Backend Connectivity Check
+    async function checkBackend() {
+      try {
+        const res = await fetch(apiUrl('/health'));
+        if (res.ok) {
+          state.isBackendAvailable = true;
+          document.getElementById('gatewayStatus').textContent = 'Gateway: Online (Port 3001)';
+          document.getElementById('gatewayStatus').style.color = '#059669';
+          syncData();
+        }
+      } catch (e) {
+        state.isBackendAvailable = false;
+        document.getElementById('gatewayStatus').textContent = 'Gateway: In-Memory Runtime';
+        document.getElementById('gatewayStatus').style.color = 'var(--text-muted)';
+      }
+    }
+
+    async function syncData() {
+      try {
+        const [mRes, fRes, uRes] = await Promise.all([
+          fetch(apiUrl('/api/models')),
+          fetch(apiUrl('/api/features')),
+          fetch(apiUrl('/api/auth/users'))
+        ]);
+        if (mRes.ok) {
+          const m = await mRes.json();
+          if (m.data?.length) state.models = m.data;
+        }
+        if (fRes.ok) {
+          const f = await fRes.json();
+          if (f.data?.length) state.features = f.data;
+        }
+        if (uRes.ok) {
+          const u = await uRes.json();
+          if (u.users?.length) state.team = u.users;
+        }
+        renderDashboard();
+      } catch (e) {}
+    }
+
+    // Dashboard View
+    function renderDashboard() {
+      document.getElementById('kpiCountModels').textContent = state.models.length;
+      document.getElementById('sideBadgeModels').textContent = state.models.length;
+      document.getElementById('sideBadgeFeatures').textContent = state.features.length;
+
+      const dashM = document.getElementById('dashModelsTbody');
+      dashM.innerHTML = state.models.map(m => `
+        <tr>
+          <td><strong style="color: var(--text); font-size: 15px;">${m.name}</strong></td>
+          <td><span class="code-pill">${m.version}</span></td>
+          <td><span class="tag tag-framework">${m.framework}</span></td>
+          <td style="color: var(--text-muted); font-weight: 500;">${m.task}</td>
+          <td><strong style="color: var(--success); font-family: var(--font-mono); font-size: 15px;">${(m.accuracy * 100).toFixed(1)}%</strong></td>
+          <td><span class="code-pill">${m.trafficSplit}% Traffic</span></td>
+          <td><span class="tag ${m.status === 'Production' ? 'tag-prod' : (m.status === 'Canary' ? 'tag-canary' : 'tag-staging')}">${m.status}</span></td>
+          <td>
+            <button class="btn btn-secondary btn-sm" onclick="jumpToInference('${m.id}')">Manual Test</button>
+          </td>
+        </tr>
+      `).join('');
+
+      const dashF = document.getElementById('dashFeaturesTbody');
+      dashF.innerHTML = state.features.map(f => `
+        <tr>
+          <td><strong style="font-size: 15px;">${f.groupName}</strong></td>
+          <td><span class="code-pill">${f.entity}</span></td>
+          <td style="font-weight: 700;">${f.featuresCount}</td>
+          <td>${f.storageType}</td>
+          <td>${f.updateFrequency}</td>
+          <td><span class="tag tag-prod">Synced</span></td>
+        </tr>
+      `).join('');
+    }
+
+    // Models Table & Canary
+    function renderModelsTable() {
+      const tbody = document.getElementById('registryModelsTbody');
+      tbody.innerHTML = state.models.map(m => `
+        <tr>
+          <td>
+            <strong style="font-size: 15px;">${m.name}</strong>
+            <div style="font-size: 12.5px; color: var(--text-dim); margin-top: 2px;">${m.id}</div>
+          </td>
+          <td><span class="code-pill">${m.version}</span></td>
+          <td><span class="tag tag-framework">${m.framework}</span></td>
+          <td><span style="color: var(--success); font-weight: 800; font-family: var(--font-mono); font-size: 15px;">Acc: ${(m.accuracy * 100).toFixed(1)}%</span></td>
+          <td style="font-family: var(--font-mono); font-weight: 700;">${m.latency}</td>
+          <td><span class="code-pill">${m.trafficSplit}%</span></td>
+          <td><span class="tag ${m.status === 'Production' ? 'tag-prod' : (m.status === 'Canary' ? 'tag-canary' : 'tag-staging')}">${m.status}</span></td>
+          <td>
+            <div style="display: flex; gap: 8px;">
+              <button class="btn btn-secondary btn-sm" onclick="jumpToInference('${m.id}')">Test</button>
+              <button class="btn btn-danger btn-sm" onclick="deleteModel('${m.id}')">Delete</button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function updateTrafficSplit(val) {
+      document.getElementById('trafficBaselineLbl').textContent = `${val}%`;
+      document.getElementById('trafficCanaryLbl').textContent = `${100 - val}%`;
+
+      const base = state.models.find(m => m.id === 'mdl-churn-v2');
+      const canary = state.models.find(m => m.id === 'mdl-churn-v2-canary');
+      if (base) base.trafficSplit = parseInt(val);
+      if (canary) canary.trafficSplit = 100 - parseInt(val);
+      renderDashboard();
+    }
+
+    function rollbackCanary() {
+      document.getElementById('trafficSlider').value = 100;
+      updateTrafficSplit(100);
+      alert('Canary traffic rolled back to 100% stable production.');
+    }
+
+    function openNewModelModal() { document.getElementById('newModelModal').classList.add('show'); }
+    function closeNewModelModal() { document.getElementById('newModelModal').classList.remove('show'); }
+
+    async function handleModelRegister(e) {
+      e.preventDefault();
+      const model = {
+        id: `mdl-${Date.now()}`,
+        name: document.getElementById('regMName').value,
+        version: document.getElementById('regMVer').value,
+        framework: document.getElementById('regMFramework').value,
+        status: document.getElementById('regMStage').value,
+        trafficSplit: 0,
+        accuracy: parseFloat(document.getElementById('regMAcc').value) || 0.94,
+        latency: '10ms',
+        task: 'Classification',
+        description: document.getElementById('regMDesc').value || 'Registered ML artifact.'
+      };
+
+      try {
+        await fetch(apiUrl('/api/models'), {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(model)
+        });
+      } catch (e) {}
+
+      state.models.unshift(model);
+      closeNewModelModal();
+      renderModelsTable();
+      renderDashboard();
+    }
+
+    async function deleteModel(id) {
+      if (!confirm('Unregister this model artifact?')) return;
+      try {
+        await fetch(apiUrl(`/api/models/${id}`), { method: 'DELETE' });
+      } catch (e) {}
+      state.models = state.models.filter(m => m.id !== id);
+      renderModelsTable();
+      renderDashboard();
+    }
+
+    // Real-Time Inference & SHAP Visual Card
+    function renderInferenceFields() {
+      const modelId = document.getElementById('selInferModel').value;
+      const area = document.getElementById('dynamicFormInputs');
+
+      if (modelId.includes('churn')) {
+        area.innerHTML = `
+          <div class="form-grid">
+            <div class="form-item">
+              <label>Monthly Spend (USD)</label>
+              <input type="number" id="f_spend" class="form-input" value="45" oninput="updateShapPreview()">
+            </div>
+            <div class="form-item">
+              <label>Tenure (Months)</label>
+              <input type="number" id="f_tenure" class="form-input" value="14" oninput="updateShapPreview()">
+            </div>
+          </div>
+          <div class="form-item">
+            <label>Support Tickets (Last 30 Days)</label>
+            <input type="number" id="f_tickets" class="form-input" value="1" oninput="updateShapPreview()">
+          </div>
+        `;
+      } else if (modelId === 'mdl-fraud-xgb') {
+        area.innerHTML = `
+          <div class="form-grid">
+            <div class="form-item">
+              <label>Transaction Amount (USD)</label>
+              <input type="number" id="f_amount" class="form-input" value="1250">
+            </div>
+            <div class="form-item">
+              <label>1-Hour Velocity</label>
+              <input type="number" id="f_velocity" class="form-input" value="4">
+            </div>
+          </div>
+          <div class="form-item">
+            <label>International Transaction</label>
+            <select id="f_intl" class="form-input">
+              <option value="true">True (High-Risk IP / Cross-Border)</option>
+              <option value="false">False (Domestic Verified)</option>
+            </select>
+          </div>
+        `;
+      } else {
+        area.innerHTML = `
+          <div class="form-item">
+            <label>Input Text / Query Payload</label>
+            <input type="text" id="f_text" class="form-input" value="Fast execution, very robust platform.">
+          </div>
+        `;
+      }
+    }
+
+    function updateManualThreshold(val) {
+      state.manualThreshold = parseFloat(val);
+      document.getElementById('manualThresholdLbl').textContent = val;
+      updateShapPreview();
+    }
+
+    function updateShapPreview() {
+      const tickets = parseInt(document.getElementById('f_tickets')?.value || 1);
+      const tenure = parseInt(document.getElementById('f_tenure')?.value || 14);
+      const spend = parseFloat(document.getElementById('f_spend')?.value || 45);
+      const area = document.getElementById('shapAttributionArea');
+
+      const ticketImpact = (tickets * 18).toFixed(1);
+      const tenureImpact = (tenure * 1.6).toFixed(1);
+
+      area.innerHTML = `
+        <div class="shap-row">
+          <span>Support Tickets (${tickets} tickets)</span>
+          <span class="shap-val-pos">+${ticketImpact}% Churn Impact</span>
+        </div>
+        <div class="shap-row">
+          <span>Customer Tenure (${tenure} months)</span>
+          <span class="shap-val-neg">-${tenureImpact}% Loyalty Offset</span>
+        </div>
+        <div class="shap-row">
+          <span>Base Prior Risk</span>
+          <span style="color: var(--text-dim); font-family: var(--font-mono); font-weight: 700;">+10.0% Base Rate</span>
+        </div>
+      `;
+
+      // Live calculate score
+      const riskScore = (tickets * 0.22) - (tenure * 0.015) + (spend < 40 ? 0.2 : 0.05);
+      const isChurn = riskScore > state.manualThreshold;
+      const conf = isChurn ? Math.min(0.98, 0.5 + riskScore * 0.4) : Math.min(0.98, 1 - riskScore);
+
+      const badge = document.getElementById('decisionBadge');
+      const dText = document.getElementById('decisionText');
+      const gFill = document.getElementById('decisionGauge');
+      const cPercent = document.getElementById('confidencePercent');
+
+      if (badge && dText) {
+        if (isChurn) {
+          badge.className = 'decision-badge-large decision-badge-risk';
+          dText.textContent = 'CHURN RISK';
+          gFill.style.background = '#dc2626';
+        } else {
+          badge.className = 'decision-badge-large decision-badge-retained';
+          dText.textContent = 'RETAINED';
+          gFill.style.background = '#059669';
+        }
+        gFill.style.width = `${(conf * 100).toFixed(1)}%`;
+        cPercent.textContent = `${(conf * 100).toFixed(1)}%`;
+      }
+    }
+
+    function jumpToInference(modelId) {
+      switchNav('inference', 'Real-Time Inference Console');
+      const sel = document.getElementById('selInferModel');
+      sel.value = modelId.includes('churn') ? 'mdl-churn-v2' : modelId;
+      renderInferenceFields();
+      sendInferenceRequest();
+    }
+
+    async function sendInferenceRequest() {
+      const modelId = document.getElementById('selInferModel').value;
+      let payload = {};
+
+      if (modelId.includes('churn')) {
+        payload = {
+          monthly_spend: parseFloat(document.getElementById('f_spend')?.value || 45),
+          tenure_months: parseInt(document.getElementById('f_tenure')?.value || 14),
+          support_tickets: parseInt(document.getElementById('f_tickets')?.value || 1)
+        };
+      } else if (modelId === 'mdl-fraud-xgb') {
+        payload = {
+          amount_usd: parseFloat(document.getElementById('f_amount')?.value || 100),
+          velocity_1h: parseInt(document.getElementById('f_velocity')?.value || 1),
+          is_international: document.getElementById('f_intl')?.value === 'true'
+        };
+      } else {
+        payload = { text: document.getElementById('f_text')?.value || 'sample' };
+      }
+
+      document.getElementById('dispModelId').textContent = modelId;
+      document.getElementById('dispLatency').textContent = '4 ms';
+      updateShapPreview();
+    }
+
+    // Batch Inference Processing
+    function generateBatchData(count) {
+      const rows = [];
+      for (let i = 1; i <= count; i++) {
+        rows.push({
+          row_id: i,
+          user_id: `USR-${1000 + i}`,
+          tenure_months: Math.floor(Math.random() * 36) + 1,
+          monthly_spend: Math.floor(Math.random() * 120) + 20,
+          support_tickets: Math.floor(Math.random() * 5),
+          prediction: '--',
+          confidence: '--',
+          latency: '--'
+        });
+      }
+      state.batchRows = rows;
+      document.getElementById('batchTotalCount').textContent = `${count} Rows`;
+      document.getElementById('batchRiskCount').textContent = '--';
+      document.getElementById('batchRetainCount').textContent = '--';
+      renderBatchTable();
+    }
+
+    function renderBatchTable() {
+      const tbody = document.getElementById('batchResultsTbody');
+      tbody.innerHTML = state.batchRows.map(r => `
+        <tr>
+          <td><span class="code-pill">${r.row_id}</span></td>
+          <td><strong style="font-size: 14.5px;">${r.user_id}</strong></td>
+          <td class="font-mono" style="font-weight: 600;">${r.tenure_months} mo</td>
+          <td class="font-mono" style="font-weight: 600;">$${r.monthly_spend}</td>
+          <td class="font-mono" style="font-weight: 600;">${r.support_tickets}</td>
+          <td>
+            ${r.prediction === '--' ? '<span style="color: var(--text-dim);">Pending</span>' :
+              `<span class="tag ${r.prediction === 'CHURN_RISK' ? 'tag-staging' : 'tag-prod'}">${r.prediction}</span>`}
+          </td>
+          <td class="font-mono" style="font-weight: 800; font-size: 15px;">${r.confidence}</td>
+          <td>
+            <button class="btn btn-secondary btn-sm" onclick="manualOverrideRow(${r.row_id})">Override</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function manualOverrideRow(rowId) {
+      const row = state.batchRows.find(r => r.row_id === rowId);
+      if (row) {
+        row.prediction = row.prediction === 'CHURN_RISK' ? 'RETAINED' : 'CHURN_RISK';
+        row.confidence = 0.99;
+        renderBatchTable();
+      }
+    }
+
+    async function runBatchScoring() {
+      if (!state.batchRows.length) generateBatchData(50);
+      let risks = 0;
+      let retains = 0;
+
+      try {
+        const res = await fetch(apiUrl('/api/serving/batch'), {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ modelId: 'mdl-churn-v2', rows: state.batchRows })
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data.results) {
+            state.batchRows = data.results.map(r => ({ ...r, latency: '2ms' }));
+            state.batchRows.forEach(r => {
+              if (r.prediction === 'CHURN_RISK') risks++; else retains++;
+            });
+            document.getElementById('batchRiskCount').textContent = `${risks} High Risk`;
+            document.getElementById('batchRetainCount').textContent = `${retains} Safe`;
+            renderBatchTable();
+            return;
+          }
+        }
+      } catch (e) {}
+
+      // In-Memory Fallback
+      state.batchRows.forEach(r => {
+        const risk = (r.support_tickets * 0.22) - (r.tenure_months * 0.015) + (r.monthly_spend < 40 ? 0.2 : 0.05);
+        const isChurn = risk > state.manualThreshold;
+        if (isChurn) risks++; else retains++;
+        r.prediction = isChurn ? 'CHURN_RISK' : 'RETAINED';
+        r.confidence = Number((isChurn ? (0.5 + risk * 0.4) : (1 - risk)).toFixed(3));
+        r.latency = '2ms';
+      });
+
+      document.getElementById('batchRiskCount').textContent = `${risks} High Risk`;
+      document.getElementById('batchRetainCount').textContent = `${retains} Safe`;
+      renderBatchTable();
+    }
+
+    function downloadBatchCSV() {
+      if (!state.batchRows.length) return alert('Generate and score batch first.');
+      const headers = ['Row_ID', 'User_ID', 'Tenure_Months', 'Monthly_Spend', 'Support_Tickets', 'Prediction', 'Confidence_Score'];
+      const rows = state.batchRows.map(r => [r.row_id, r.user_id, r.tenure_months, r.monthly_spend, r.support_tickets, r.prediction, r.confidence].join(','));
+      const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows].join('\n');
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement('a');
+      link.setAttribute('href', encodedUri);
+      link.setAttribute('download', `scored_batch_${Date.now()}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    // Hyperparameter Tuning Simulation
+    function runHyperparamTrials() {
+      const tbody = document.getElementById('hyperparamTbody');
+      const trials = [
+        { id: 'Trial 03', lr: '0.002', arch: '[256, 128, 32]', drop: '0.25', loss: '0.0761', acc: '95.4%', best: true },
+        { id: 'Trial 04', lr: '0.010', arch: '[512, 256, 64]', drop: '0.40', loss: '0.0980', acc: '93.1%', best: false },
+        { id: 'Trial 05', lr: '0.0005', arch: '[128, 64, 32]', drop: '0.15', loss: '0.1040', acc: '91.8%', best: false }
+      ];
+
+      trials.forEach(t => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><span class="code-pill">${t.id}</span></td>
+          <td class="font-mono">${t.lr}</td>
+          <td>${t.arch}</td>
+          <td>${t.drop}</td>
+          <td class="font-mono">${t.loss}</td>
+          <td><strong style="color: var(--success); font-family: var(--font-mono); font-size: 15px;">${t.acc}</strong></td>
+          <td><span class="tag ${t.best ? 'tag-prod' : 'tag-staging'}">${t.best ? 'New Best' : 'Completed'}</span></td>
+          <td><button class="btn btn-secondary btn-sm" onclick="alert('Trial checkpoint selected.')">Select</button></td>
+        `;
+        tbody.prepend(tr);
+      });
+    }
+
+    // Data Drift Distribution Canvas
+    function renderDriftChart() {
+      const cvs = document.getElementById('driftCanvas');
+      if (!cvs) return;
+      const ctx = cvs.getContext('2d');
+      const w = cvs.width;
+      const h = cvs.height;
+
+      ctx.clearRect(0, 0, w, h);
+
+      // Grid
+      ctx.strokeStyle = '#cbd5e1';
+      ctx.lineWidth = 1;
+      for (let x = 40; x < w; x += 60) {
+        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h - 25); ctx.stroke();
+      }
+      for (let y = 20; y < h - 25; y += 35) {
+        ctx.beginPath(); ctx.moveTo(40, y); ctx.lineTo(w, y); ctx.stroke();
+      }
+
+      // Baseline Distribution (Blue Bell Curve)
+      ctx.fillStyle = 'rgba(37, 99, 235, 0.15)';
+      ctx.strokeStyle = '#2563eb';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(40, h - 25);
+      for (let x = 40; x < w - 20; x += 10) {
+        const norm = (x - (w / 2 - 40)) / 60;
+        const y = (h - 25) - Math.exp(-0.5 * norm * norm) * 125;
+        ctx.lineTo(x, y);
+      }
+      ctx.lineTo(w - 20, h - 25);
+      ctx.fill();
+      ctx.stroke();
+
+      // Current Live Distribution (Amber Shifted Curve)
+      ctx.fillStyle = 'rgba(217, 119, 6, 0.15)';
+      ctx.strokeStyle = '#d97706';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(40, h - 25);
+      for (let x = 40; x < w - 20; x += 10) {
+        const norm = (x - (w / 2 + 30)) / 70;
+        const y = (h - 25) - Math.exp(-0.5 * norm * norm) * 110;
+        ctx.lineTo(x, y);
+      }
+      ctx.lineTo(w - 20, h - 25);
+      ctx.fill();
+      ctx.stroke();
+    }
+
+    function triggerDriftAlertRetrain() {
+      alert('Manual Retraining DAG triggered on Kubernetes cluster. Human review approved.');
+      switchNav('pipelines', 'MLOps Automated Pipelines');
+      runPipelineTrigger('pipe-churn-retrain');
+    }
+
+    // Training Canvas & Architecture Pipeline
+    let trainTimer = null;
+    function drawLossGraph(losses, accs) {
+      const cvs = document.getElementById('lossChartCanvas');
+      if (!cvs) return;
+      const ctx = cvs.getContext('2d');
+      const w = cvs.width;
+      const h = cvs.height;
+
+      ctx.clearRect(0, 0, w, h);
+      ctx.strokeStyle = '#e2e8f0'; ctx.lineWidth = 1;
+      for (let x = 40; x < w; x += 50) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h - 25); ctx.stroke(); }
+      for (let y = 20; y < h - 25; y += 35) { ctx.beginPath(); ctx.moveTo(40, y); ctx.lineTo(w, y); ctx.stroke(); }
+
+      ctx.strokeStyle = '#94a3b8';
+      ctx.beginPath(); ctx.moveTo(40, 0); ctx.lineTo(40, h - 25); ctx.lineTo(w, h - 25); ctx.stroke();
+
+      if (losses.length < 2) {
+        ctx.fillStyle = '#475569'; ctx.font = '13px sans-serif'; ctx.fontWeight = 'bold';
+        ctx.fillText('Click "Start Training Run" to begin epoch convergence and architecture flow', 80, h / 2);
+        return;
+      }
+
+      // Loss (Amber)
+      ctx.strokeStyle = '#d97706'; ctx.lineWidth = 3; ctx.beginPath();
+      losses.forEach((val, i) => {
+        const x = 40 + (i / 25) * (w - 60);
+        const y = (h - 35) - (val / 1.5) * (h - 50);
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      });
+      ctx.stroke();
+
+      // Accuracy (Emerald)
+      ctx.strokeStyle = '#059669'; ctx.lineWidth = 3; ctx.beginPath();
+      accs.forEach((val, i) => {
+        const x = 40 + (i / 25) * (w - 60);
+        const y = (h - 35) - val * (h - 50);
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      });
+      ctx.stroke();
+
+      // Legend
+      ctx.fillStyle = '#d97706'; ctx.fillRect(w - 180, 8, 10, 10);
+      ctx.fillStyle = '#0f172a'; ctx.font = '13px sans-serif'; ctx.fillText('Loss', w - 165, 17);
+      ctx.fillStyle = '#059669'; ctx.fillRect(w - 110, 8, 10, 10);
+      ctx.fillStyle = '#0f172a'; ctx.fillText('Accuracy', w - 95, 17);
+    }
+
+    function runTrainingExecution() {
+      if (trainTimer) clearInterval(trainTimer);
+      const epochs = parseInt(document.getElementById('inpEpochCount').value) || 25;
+      const btn = document.getElementById('btnTrainRun');
+      const status = document.getElementById('trainEpochStatus');
+
+      btn.disabled = true;
+      btn.textContent = 'Training in Progress...';
+
+      const nodes = ['nodeData', 'nodeNorm', 'nodeLayer1', 'nodeDrop', 'nodeOutput', 'nodeGate'];
+
+      let cur = 0;
+      let loss = 1.2;
+      let acc = 0.55;
+      const losses = [loss];
+      const accs = [acc];
+
+      trainTimer = setInterval(() => {
+        cur++;
+        loss = Math.max(0.06, loss * 0.88 + (Math.random() * 0.03 - 0.015));
+        acc = Math.min(0.984, acc + (0.98 - acc) * 0.16);
+        losses.push(loss);
+        accs.push(acc);
+
+        status.textContent = `Epoch ${cur}/${epochs} | Loss: ${loss.toFixed(4)} | Acc: ${(acc*100).toFixed(1)}%`;
+        document.getElementById('nodeAccVal').textContent = `${(acc*100).toFixed(1)}%`;
+        document.getElementById('nodeLossVal').textContent = `Loss: ${loss.toFixed(3)}`;
+
+        // Animate pipeline diagram
+        const activeIdx = cur % nodes.length;
+        nodes.forEach((n, idx) => {
+          const el = document.getElementById(n);
+          if (el) {
+            if (idx === activeIdx) el.classList.add('active');
+            else el.classList.remove('active');
+          }
+        });
+
+        drawLossGraph(losses, accs);
+
+        if (cur >= epochs) {
+          clearInterval(trainTimer);
+          btn.disabled = false;
+          btn.textContent = 'Start Training Run';
+          nodes.forEach(n => document.getElementById(n)?.classList.add('active'));
+          status.textContent = `Completed (${epochs} Epochs) | Accuracy: ${(acc*100).toFixed(2)}% | Loss: ${loss.toFixed(4)}`;
+        }
+      }, 120);
+    }
+
+    // Features
+    function renderFeaturesTable() {
+      const tbody = document.getElementById('featuresFullTbody');
+      tbody.innerHTML = state.features.map(f => `
+        <tr>
+          <td><strong style="font-size: 15px;">${f.groupName}</strong></td>
+          <td><span class="code-pill">${f.entity}</span></td>
+          <td style="font-weight: 700;">${f.featuresCount}</td>
+          <td>${(f.sampleFeatures || []).map(s => `<span class="code-pill" style="font-size: 12px; margin-right: 4px;">${s}</span>`).join('')}</td>
+          <td>${f.storageType}</td>
+          <td>${f.updateFrequency}</td>
+          <td><button class="btn btn-secondary btn-sm" onclick="alert('Feature group sync triggered manually.')">Sync Now</button></td>
+        </tr>
+      `).join('');
+    }
+
+    function openNewFeatureModal() { document.getElementById('newFeatureModal').classList.add('show'); }
+    function closeNewFeatureModal() { document.getElementById('newFeatureModal').classList.remove('show'); }
+
+    async function handleFeatureAdd(e) {
+      e.preventDefault();
+      const feats = document.getElementById('regFList').value.split(',').map(s => s.trim()).filter(Boolean);
+      const group = {
+        groupName: document.getElementById('regFName').value,
+        entity: document.getElementById('regFEntity').value,
+        featuresCount: feats.length || 4,
+        sampleFeatures: feats,
+        storageType: 'Redis + PostgreSQL',
+        updateFrequency: 'Hourly',
+        lastSynced: 'Just now'
+      };
+
+      try {
+        await fetch(apiUrl('/api/features'), {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(group)
+        });
+      } catch (e) {}
+
+      state.features.unshift(group);
+      closeNewFeatureModal();
+      renderFeaturesTable();
+      renderDashboard();
+    }
+
+    // Pipelines
+    function renderPipelines() {
+      const container = document.getElementById('pipelinesListArea');
+      container.innerHTML = state.pipelines.map(p => `
+        <div style="background: #ffffff; border: 1.5px solid var(--border); border-radius: 10px; padding: 1.5rem; box-shadow: 0 1px 4px rgba(0,0,0,0.02);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <div>
+              <strong style="color: var(--text); font-size: 16px;">${p.name}</strong>
+              <span class="code-pill" style="margin-left: 10px;">${p.type}</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <span class="tag ${p.status === 'Running' ? 'tag-staging' : 'tag-prod'}" id="pipeTag-${p.id}">${p.status}</span>
+              <button class="btn btn-secondary btn-sm" onclick="runPipelineTrigger('${p.id}')">Manual Step Run</button>
+            </div>
+          </div>
+          <div style="font-size: 13.5px; color: var(--text-dim); margin-bottom: 12px; font-weight: 500;">
+            Trigger: ${p.trigger} &bull; Duration: ${p.duration} &bull; Last Run: ${p.lastRun}
+          </div>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            ${(p.steps || []).map((st, i) => `
+              <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: 6px; padding: 6px 12px; font-size: 13px; font-family: var(--font-mono); display: flex; align-items: center; gap: 8px;">
+                <span style="color: var(--accent); font-weight: 800;">${i+1}.</span>
+                <span style="font-weight: 700; color: #1e293b;">${st}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    async function runPipelineTrigger(id) {
+      const tag = document.getElementById(`pipeTag-${id}`);
+      if (tag) { tag.textContent = 'Running'; tag.className = 'tag tag-staging'; }
+      try { await fetch(apiUrl(`/api/pipelines/${id}/trigger`), { method: 'POST' }); } catch (e) {}
+      setTimeout(() => {
+        if (tag) { tag.textContent = 'Succeeded'; tag.className = 'tag tag-prod'; }
+      }, 2500);
+    }
+
+    // Team
+    function renderTeam() {
+      const tbody = document.getElementById('teamTbody');
+      tbody.innerHTML = state.team.map(u => `
+        <tr>
+          <td><span class="code-pill">${u.id}</span></td>
+          <td><strong style="font-size: 15px;">${u.name}</strong></td>
+          <td style="font-weight: 500;">${u.email}</td>
+          <td><span class="tag tag-framework">${u.role}</span></td>
+          <td><span class="code-pill">${u.organization || 'ml-platform-hub'}</span></td>
+          <td style="color: var(--text-dim); font-size: 13.5px; font-weight: 500;">${u.joined || '2026-08-30'}</td>
+          <td><span class="tag tag-prod">Active</span></td>
+        </tr>
+      `).join('');
+    }
+
+    // Registration Portal
+    function populateAuthForm() {
+      document.getElementById('regAuthName').value = state.user.name || '';
+      document.getElementById('regAuthEmail').value = state.user.email || '';
+      document.getElementById('regAuthOrg').value = state.user.organization || 'ml-platform-hub';
+      document.getElementById('regAuthRole').value = state.user.role || 'ML Lead & Architect';
+      document.getElementById('regAuthKey').value = state.user.apiKey || `auth_${Math.random().toString(36).substring(2, 14)}`;
+    }
+
+    function generateNewKey() {
+      document.getElementById('regAuthKey').value = `auth_${Math.random().toString(36).substring(2, 14)}`;
+    }
+
+    async function handleRegistrationSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById('regAuthName').value;
+      const email = document.getElementById('regAuthEmail').value;
+      const org = document.getElementById('regAuthOrg').value;
+      const role = document.getElementById('regAuthRole').value;
+      const apiKey = document.getElementById('regAuthKey').value;
+
+      const userObj = { name, email, organization: org, role, apiKey };
+
+      try {
+        const res = await fetch(apiUrl('/api/auth/register'), {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(userObj)
+        });
+        if (res.ok) {
+          const resData = await res.json();
+          if (resData.user) userObj.id = resData.user.id;
+        }
+      } catch (e) {}
+
+      state.user = userObj;
+      localStorage.setItem('mlhub_user', JSON.stringify(userObj));
+
+      document.getElementById('sideUserName').textContent = name;
+      document.getElementById('sideUserRole').textContent = role;
+      document.getElementById('sideOrgName').textContent = org;
+      document.getElementById('avatarLetter').textContent = name.charAt(0).toUpperCase();
+
+      state.team.unshift({
+        id: userObj.id || `usr-${Date.now()}`,
+        name,
+        email,
+        role,
+        organization: org,
+        joined: new Date().toISOString().split('T')[0]
+      });
+
+      const banner = document.getElementById('regSuccessBanner');
+      banner.style.display = 'block';
+      setTimeout(() => { banner.style.display = 'none'; }, 4000);
+
+      renderTeam();
+    }
+
+    // Init & Polling
+    window.addEventListener('DOMContentLoaded', () => {
+      checkBackend();
+      renderDashboard();
+      renderInferenceFields();
+      updateShapPreview();
+      drawLossGraph([], []);
+      renderDriftChart();
+      populateAuthForm();
+
+      setInterval(checkBackend, 5000);
+    });
+  </script>
+</body>
+</html>
