@@ -9,6 +9,7 @@ class TrainingPipelineService {
     this.index = new Map();
     this.history = [];
     this.config = {};
+    this.pipelineVersion = '1.0.0';
   }
 
   method0(input = {}, options = {}) {
