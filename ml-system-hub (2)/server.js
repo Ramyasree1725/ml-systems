@@ -1,5 +1,5 @@
 /**
- * ML System Hub — Enterprise Node.js Backend Server
+ * ML System Hub ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Enterprise Node.js Backend Server
  * Production MLOps Engine with Real-Time Inference, Batch Processing, Data Drift, and Model Registry
  */
 
@@ -9,6 +9,7 @@ const path = require('path');
 const crypto = require('crypto');
 
 const PORT = process.env.PORT || 3001;
+const BACKEND_VERSION = '1.0.0';
 
 // Clean up any .env files automatically
 ['.env.example', '.env', path.join('ml-system-hub', '.env.example'), path.join('ml-system-hub', '.env')].forEach(rel => {
@@ -442,13 +443,13 @@ const server = http.createServer(async (req, res) => {
 function startListening(port) {
   server.listen(port, () => {
     console.log(`\n========================================================`);
-    console.log(`⚡ ML System Hub Backend Server is LIVE!`);
-    console.log(`🚀 Web Platform URL: http://localhost:${port}`);
-    console.log(`📡 REST API Health:   http://localhost:${port}/health`);
-    console.log(`👥 Auth Register:    POST http://localhost:${port}/api/auth/register`);
-    console.log(`🧠 Models Endpoint:  http://localhost:${port}/api/models`);
-    console.log(`⚡ Live Inference:   POST http://localhost:${port}/api/serving/predict`);
-    console.log(`📦 Batch Scoring:    POST http://localhost:${port}/api/serving/batch`);
+    console.log(`ÃƒÂ¢Ã…Â¡Ã‚Â¡ ML System Hub Backend Server is LIVE!`);
+    console.log(`ÃƒÂ°Ã…Â¸Ã…Â¡Ã¢â€šÂ¬ Web Platform URL: http://localhost:${port}`);
+    console.log(`ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â¡ REST API Health:   http://localhost:${port}/health`);
+    console.log(`ÃƒÂ°Ã…Â¸Ã¢â‚¬ËœÃ‚Â¥ Auth Register:    POST http://localhost:${port}/api/auth/register`);
+    console.log(`ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â  Models Endpoint:  http://localhost:${port}/api/models`);
+    console.log(`ÃƒÂ¢Ã…Â¡Ã‚Â¡ Live Inference:   POST http://localhost:${port}/api/serving/predict`);
+    console.log(`ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â¦ Batch Scoring:    POST http://localhost:${port}/api/serving/batch`);
     console.log(`========================================================\n`);
   });
 
