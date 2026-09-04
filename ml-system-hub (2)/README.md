@@ -143,3 +143,4 @@ npm run test:coverage
 | `POST` | `/api/serving/batch` | Batch inference processing engine |
 | `GET` | `/api/auth/users` | List registered platform team members |
 | `POST` | `/api/auth/register` | Register new platform engineer |
+`r`n## Development Branches`r`n`r`n- feature/frontend - Frontend implementation`r`n- feature/backend - Backend implementation`r`n- feature/ml-model - Machine learning pipeline updates`r`n- feature/documentation - Project documentation updates
